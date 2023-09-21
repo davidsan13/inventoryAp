@@ -1,0 +1,15 @@
+extends layout
+
+block content
+  h1= title
+  
+  ul
+    each item in category_detail
+      li
+        a(href=item.url) #{item.name}
+
+    else
+      li There are no category.
+  hr
+  p
+    a(href=category.url+'/delete') Delete Category
