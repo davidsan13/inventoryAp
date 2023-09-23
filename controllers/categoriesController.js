@@ -140,7 +140,7 @@ exports.categories_update_post = [
       return;
     } else {
       const updatedCategory = await Categories.findByIdAndUpdate(req.params.id, category, {});
-      res.redirect(updatedBook.url);
+      res.redirect(updatedCategory.url);
     }
   })
 ]

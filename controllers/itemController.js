@@ -2,6 +2,7 @@ const Items = require("../models/items")
 const asyncHandler = require("express-async-handler")
 const { body, validationResult } = require("express-validator");
 
+
 exports.items_list = asyncHandler(async (req, res, next) => {
   const allItems = await Items.find({}, "name description")
     .sort({ name: 1 })
@@ -60,7 +61,7 @@ exports.item_create_post = [
       })
 
       if (!errors.isEmpty()) {
-        res. render("item_form", {
+        res.render("item_form", {
           title: "Create Item",
           item: item,
         })
@@ -73,14 +74,16 @@ exports.item_create_post = [
           res.redirect(itemExists.url)
         } else {
           await item.save()
-          res.redirect(item.url)
+          req.item = item;
+          next()
+          // res.redirect(item.url)
         }
       }
     })
 ];
 
 exports.item_delete_get = asyncHandler(async (req, res, next) => {
-  const item = Items.findById(req.params.id).exec()
+  const item = await Items.findById(req.params.id).exec()
 
   if( item === null) {
     res.redirect("/cataglog/items")
@@ -93,7 +96,7 @@ exports.item_delete_get = asyncHandler(async (req, res, next) => {
 })
 
 exports.item_delete_post = asyncHandler(async (req, res, next) => {
-  const item = Items.findById(req.params.id).exec()
+  const item = await Items.findById(req.params.id).exec()
 
   await Items.findByIdAndRemove(req.body.itemid);
   res.redirect("/catalog/items/")
@@ -158,3 +161,10 @@ exports.item_update_post = [
     }
   })
 ]
+
+exports.item_upload_get = asyncHandler(async (req, res, next) => {
+  res.render("upload")
+})
+exports.item_upload_post = asyncHandler(async (req, res, next) => {
+  res.send('Image Uploaded')
+})

@@ -3,7 +3,7 @@ extends layout
 block content
   h1= title
   
-  ul
+  ul.products_container
     each item in category_detail
       li
         a(href=item.url) #{item.name}
